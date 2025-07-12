@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Celebration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        .start-button {
+            padding: 15px 30px;
+            font-size: 24px;
+            background-color: #ff7675;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .start-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        #main-content {
+            display: none;
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .photo-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-content: space-around;
+            padding: 10px;
+            opacity: 0.8;
+            filter: blur(3px);
+        }
+
+        .photo-background img {
+            width: calc(20% - 10px);
+            margin: 5px;
+            object-fit: cover;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        @import url('https://fonts.googleapis.com/css?family=Indie+Flower');
+        @import url('https://fonts.googleapis.com/css?family=Indie+Flower');       
+
+        .flip-card {
+            background-color: transparent;
+            width: 370px;
+            height: 480px;
+            perspective: 1500px; /* Perspektif bikin 3D */
+            margin: 50px auto;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card:hover .flip-card-inner {
+             transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            font-family: 'Indie Flower', cursive; /* Font default */
+            font-size: 20px;
+        }
+
+        .flip-card-front img {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            object-fit: cover;
+            background-color: #ececec;
+        }
+
+        .flip-card-back {
+            background-color: #e0e1dc;
+            color: #013243;
+            transform: rotateY(180deg);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        /* Heading font khusus */
+        .flip-card-back h4 {
+            font-family: 'Amatic SC', cursive;
+            font-size: 26px;
+            margin: 10px 0;
+        }
+
+        /* Warna heading */
+        .color1 { color: #1BBC9B; }
+        .color2 { color: #C0392B; }
+
+        /* Text alignment */
+        .text-right {
+            text-align: right;
+        }
+       
+        .text-right {
+	    text-align: right;
+        }
+
+        .confetti, .balloon {
+            position: absolute;
+            z-index: 5;
+        }
+
+        #audio-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+        }
+
+        .audio-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #74b9ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #response-form {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background-color: #74b9ff;
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #ddd;
+            color: #333;
+        }
+
+        #open-form-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+            padding: 10px 20px;
+            background-color: #00cec9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .photo-background img {
+                width: calc(33% - 10px);
+            }
+            
+            #greeting-module {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .start-button {
+                font-size: 20px;
+                padding: 12px 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .photo-background img {
+                width: calc(50% - 10px);
+            }
+            
+            .photo-background {
+                padding: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Start Screen -->
+    <div id="start-screen">
+        <button class="start-button">Mulai</button>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- Photo Background -->
+        <div class="photo-background" id="photo-container">
+            <!-- 15 photo placeholders will be added here -->
+        </div>
+        <div class="flip-card">
+  <div class="flip-card-inner">
+    <div class="flip-card-front">
+      <img src="Asset/foto/a5b21cd2-517b-4d6f-a153-9a1f00efafd8-removebg-preview.png" alt="Front Image">
+    </div>
+    <div class="flip-card-back">
+      <h4>SELAMAT ULANGTAHUN!</h2>
+        <h4>‎ </h2>
+        <p>Dear Rachel,</p>
+        <p>Makasih ya udah mau jadi sahabat gw</p>
+        <p>Gw seneng kok denger curhatan lu</p>
+        <p>Walaupun lu kalo bales chat gw lama banget</p>
+        <p>Tapi lu selalu nemenin gw pas lagi bosen</p>
+        <p>dan itu yang membuatlu menjadi spesial bagi gw</p>
+        <p class="text-right">Selamat Ulang Tahun ya, Rachel</p>
+        <p>‎ </p>
+        <p class="text-right">♥Sahabat lu</p>
+    </div>
+  </div>
+</div>
+
+
+
+        <!-- Greeting Module -->
+        <div id="greeting-module">
+            <!-- Placeholder for birthday greeting card module -->
+            <div id="custom-greeting-card" style="min-height: 300px;">
+                <!-- Custom greeting card content will be inserted here -->
+                <p style="text-align: center; margin-top: 100px;"> </p>
+            </div>
+        </div>
+
+        <!-- Response Button -->
+        <button id="open-form-btn">Kirim Balasan</button>
+
+        <!-- Audio Controls -->
+        <div id="audio-controls">
+            <button class="audio-btn" id="mute-btn">🔇</button>
+        </div>
+
+        <!-- Response Form -->
+        <div id="response-form">
+            <div class="form-container">
+                <h2>Kirim Balasan</h2>
+                <form id="birthday-message-form">
+                    <div class="form-group">
+                        <label for="sender-name">Nama Anda</label>
+                        <input type="text" id="sender-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Pesan Ucapan</label>
+                        <textarea id="message" rows="5" required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" id="cancel-form" class="btn btn-secondary">Batal</button>
+                        <button type="submit" class="btn btn-primary">Kirim</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="bg-music" loop>
+        <source src="Asset/music/Happy Birthday (Piano Version) - Helmut Schenker.mp3" type="audio/mpeg">
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        // Initialize EmailJS (replace with your actual credentials)
+        (function() {
+            emailjs.init('tP2MX65GR00TQUjfk');
+        })();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const startScreen = document.getElementById('start-screen');
+            const startButton = document.querySelector('.start-button');
+            const mainContent = document.getElementById('main-content');
+            const bgMusic = document.getElementById('bg-music');
+            const muteBtn = document.getElementById('mute-btn');
+            const openFormBtn = document.getElementById('open-form-btn');
+            const responseForm = document.getElementById('response-form');
+            const cancelFormBtn = document.getElementById('cancel-form');
+            const messageForm = document.getElementById('birthday-message-form');
+
+           // Jika array hanya nama file, contoh:
+            const imageFiles = [
+            "IMG-20250412-WA0031.jpg",
+            "IMG-20250226-WA0077.jpg",
+            "IMG-20250204-WA0009.jpg",
+            "IMG-20250226-WA0076.jpg",
+            "IMG-20250311-WA0036.jpg",
+            "IMG-20250522-WA0052.jpg",
+            "IMG-20250605-WA0104.jpg",
+            "IMG-20250605-WA0105.jpg",
+            "IMG-20250605-WA0106.jpg",
+            "Photo 1.jpg",
+            "carlos sainz (3).jpg",
+            "carlos sainz (2).jpg",
+            "canadian gp 2025.jpg",
+            "bfeaded2-de0f-49bf-a8d8-db7acc2af0d6.jpg",
+            "5874e506-ab25-44fd-afee-33f27a86561f.jpg"
+            ];
+
+            // Pastikan photoContainer ada
+            const photoContainer = document.getElementById('photo-container');
+            console.log("photoContainer:", photoContainer);
+
+// Loop untuk menambahkan gambar
+for (let i = 0; i < imageFiles.length; i++) {
+  const img = document.createElement('img');
+  img.src = "Asset/foto/" + imageFiles[i]; // <== PATH BENAR
+  img.alt = `Photo ${i + 1}`;
+  console.log("Loading image:", img.src);
+  photoContainer.appendChild(img);
+} 
+            
+            // Start button click handler
+            startButton.addEventListener('click', function() {
+                startScreen.style.opacity = '0';
+                setTimeout(() => {
+                    startScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    
+                    // Start music
+                    bgMusic.play();
+                    
+                    // Show celebration effects
+                    showCelebrationEffects();
+                    
+                    // Start photo slideshow
+                    startPhotoSlideshow();
+                }, 500);
+            });
+            
+            // Celebration effects
+            function showCelebrationEffects() {
+                // Create confetti
+                for (let i = 0; i < 100; i++) {
+                    createConfetti();
+                }
+                
+                // Create balloons
+                for (let i = 0; i < 20; i++) {
+                    createBalloon();
+                }
+                
+                // Remove effects after 2 seconds
+                setTimeout(() => {
+                    document.querySelectorAll('.confetti, .balloon').forEach(el => {
+                        el.remove();
+                    });
+                }, 2000);
+            }
+            
+            function createConfetti() {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-10px';
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.backgroundColor = getRandomColor();
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                document.body.appendChild(confetti);
+                
+                // Animation
+                const animationDuration = Math.random() * 3000 + 2000;
+                confetti.style.transition = `top ${animationDuration}ms linear`;
+                setTimeout(() => {
+                    confetti.style.top = '100vh';
+                }, 10);
+            }
+            
+            function createBalloon() {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.style.left = Math.random() * 100 + 'vw';
+                balloon.style.top = '100vh';
+                balloon.style.width = '40px';
+                balloon.style.height = '50px';
+                balloon.style.borderRadius = '50%';
+                balloon.style.backgroundColor = getRandomColor();
+                document.body.appendChild(balloon);
+                
+                // Animation
+                const animationDuration = Math.random() * 3000 + 2000;
+                balloon.style.transition = `top ${animationDuration}ms linear`;
+                setTimeout(() => {
+                    balloon.style.top = '-100px';
+                }, 10);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    balloon.remove();
+                }, animationDuration);
+            }
+            
+            function getRandomColor() {
+                const colors = [
+                    '#ff7675', '#74b9ff', '#55efc4', '#ffeaa7', 
+                    '#a29bfe', '#fd79a8', '#fdcb6e', '#00b894'
+                ];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+            
+            // Photo slideshow
+            function startPhotoSlideshow() {
+                const photos = document.querySelectorAll('.photo-background img');
+                let currentIndex = 0;
+                
+                setInterval(() => {
+                    photos[currentIndex].style.opacity = '0.2';
+                    currentIndex = (currentIndex + 1) % photos.length;
+                    photos[currentIndex].style.opacity = '0.5';
+                }, 3000);
+            }
+            
+            // Mute button
+            muteBtn.addEventListener('click', function() {
+                bgMusic.muted = !bgMusic.muted;
+                muteBtn.innerHTML = bgMusic.muted ? '🔊' : '🔇';
+            });
+            
+            // Form handling
+            openFormBtn.addEventListener('click', function() {
+                responseForm.style.display = 'flex';
+            });
+            
+            cancelFormBtn.addEventListener('click', function() {
+                responseForm.style.display = 'none';
+            });
+            
+            messageForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const senderName = document.getElementById('sender-name').value;
+                const message = document.getElementById('message').value;
+                
+                // Send email using EmailJS
+                emailjs.send('service_pzplnfd', 'template_rslg3wa', {
+                    from_name: senderName,
+                    message: message
+                }).then(function(response) {
+                    alert('Ucapanmu telah terkirim! Terima kasih!');
+                    responseForm.style.display = 'none';
+                    messageForm.reset();
+                }, function(error) {
+                    alert('Oops... Gagal mengirim ucapan. Silahkan coba lagi.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
